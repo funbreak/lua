@@ -1,0 +1,20 @@
+require ("lua/Visuals/[Visual] FlashbangModifier");
+require ("lua/Visuals/[Visual] BulletBeams");
+require ("lua/Visuals/[Visual] HitBoxonHit");
+--require ("lua/Visuals/[Visual] DLight");
+--require ("lua/Visuals/[Visual] Fog");
+--require ("lua/Visuals/[Visual] ColorCorrection");
+--require ("lua/Visuals/[Visual] DroppedWeapons");
+require ("lua/Visuals/[Visual] HitEffectBorder");
+require ("lua/Visuals/[Visual] NoSleeve");
+require ("lua/Visuals/[Visual] TaserRange");
+require ("lua/Visuals/[Visual] Remove3DSky");
+--require ("lua/Visuals/[Visual] LocalGlow");
+require ("lua/Visuals/[Visual] CustomHealthbarColor");
+require ("lua/Visuals/[Visual] GrenadeESP");
+require ("lua/Visuals/[Visual] PingspikeFlag");
+require ("lua/Visuals/[Visual] DamageHitmarker");
+--require ("lua/Visuals/[Visual] FaggotFlag");
+--require ("lua/Visuals/[Visual] OffScreenESP");
+require ("lua/Visuals/[Visual] PlayerTrail");
+
