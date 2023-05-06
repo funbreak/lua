@@ -2,22 +2,16 @@ local bit_bor, client_eye_position, client_find_signature, client_set_event_call
 
 local ffi = require 'ffi'
 
-local dir = { "Visuals", "Effects" }
+local dir = { "LUA", "A" }
 local blist = { "blueglow1", "bubble", "glow01", "physbeam", "purpleglow1", "light_glow02", "purplelaser1", "radio", }
 
 local tracers = ui_new_checkbox(dir[1], dir[2], "Bullet beams")
+local tracers_color = ui_new_color_picker(dir[1], dir[2], "Bullet beams color", 10, 250, 85, 145)
+local tracers_color_hit = ui_new_color_picker(dir[1], dir[2], "Bullet beams color 2", 150, 130, 255, 255)
+local tracers_color_enemy = ui_new_color_picker(dir[1], dir[2], "Bullet beams color 3", 255, 0, 0, 255)
 local tracers_style = ui_new_combobox(dir[1], dir[2], "\n beam_material", blist)
 local tracers_thickness = ui_new_slider(dir[1], dir[2], "Beam thickness", 10, 100, 25, true, nil, .1)
 local tracers_time = ui_new_slider(dir[1], dir[2], "Beam duration", 2, 50, 12, true, nil, 0.1)
-
-ui_new_label(dir[1], dir[2], "Tracers default")
-local tracers_color = ui_new_color_picker(dir[1], dir[2], "Bullet beams color", 10, 250, 85, 145)
-
-local tracers_hit = ui_new_checkbox(dir[1], dir[2], "Tracers hit color")
-local tracers_color_hit = ui_new_color_picker(dir[1], dir[2], "Bullet beams color 2", 150, 130, 255, 255)
-
-local tracers_enemy = ui_new_checkbox(dir[1], dir[2], "Tracers enemy color")
-local tracers_color_enemy = ui_new_color_picker(dir[1], dir[2], "Bullet beams color 3", 255, 0, 0, 255)
 
 ui_set(tracers_style, "physbeam")
 
@@ -181,7 +175,7 @@ local bullet_handler = function(e)
 end
 
 local hurt_handler = function(e)
-	if not ui_get(tracers) or not ui_get(tracers_hit) then
+	if not ui_get(tracers) then
 		return
 	end
 
@@ -239,14 +233,27 @@ end
 
 local paint_handler = function()
 	if not ui_get(tracers) then
+		ui.set_visible(tracers_color, false)
+		ui.set_visible(tracers_color_hit, false)
+		ui.set_visible(tracers_color_enemy, false)
+		ui.set_visible(tracers_style, false)
+		ui.set_visible(tracers_thickness, false)
+		ui.set_visible(tracers_time, false)
 		return reset()
 	end
+
+	ui.set_visible(tracers_color, true)
+	ui.set_visible(tracers_color_hit, true)
+	ui.set_visible(tracers_color_enemy, true)
+	ui.set_visible(tracers_style, true)
+	ui.set_visible(tracers_thickness, true)
+	ui.set_visible(tracers_time, true)
 
 	local me = entity_get_local_player()
 
 	for tick, entities in pairs(data.impacts) do
 		for key, target in pairs(entities) do
-			local target_checks = me == key or (ui_get(tracers_enemy) and entity_is_enemy(key))
+			local target_checks = me == key or entity_is_enemy(key)
 
 			if target.should_draw and not target_checks then
 				target.should_draw = false
@@ -260,7 +267,7 @@ local paint_handler = function()
 
 				local r, g, b, a = ui_get(target.is_enemy and tracers_color_enemy or tracers_color)
 
-				if ui_get(tracers_hit) and not target.is_enemy and target.did_hit then
+				if not target.is_enemy and target.did_hit then
 					r, g, b, a = ui_get(tracers_color_hit) 
 				end
 

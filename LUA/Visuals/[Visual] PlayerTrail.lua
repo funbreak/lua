@@ -1,14 +1,10 @@
 local ffi = require "ffi"
 local vector = require "vector" -- The holy vector library
 
-local master_switch = ui.new_checkbox("LUA", "A", "Enable trail")
+local master_switch = ui.new_checkbox("LUA", "A", "Player trail")
+local color = ui.new_color_picker("LUA", "A", "Player trail", 255, 255, 255, 255)
 
 local m_vecPreviousPoint;
-
-local menu = {
-    rainbow = ui.new_checkbox("LUA", "A", "Rainbow trail"),
-    colour = ui.new_color_picker("LUA", "A", "Enable trail", 71, 182, 255, 255)
-}
 
 local signature_GlowObjectManager = client.find_signature("client.dll", "\xA1\xCC\xCC\xCC\xCC\xA8\x01\x75\x4B") or error("client.dll!::GlowObjectManager couldn't be found. Signature is outdated.")
 local signature_AddGloxBox = client.find_signature("client.dll", "\x55\x8B\xEC\x53\x56\x8D") or error("client.dll!::AddGlowBox couldn't be found. Signature is outdated.")
@@ -20,16 +16,7 @@ local setupCommand = function(ctx)
     local localplayer = entity.get_local_player()
     if not localplayer or not entity.is_alive(localplayer) then return end
     
-    local colour = ffi.cast("unsigned char**", ffi.new("unsigned char[4]", ui.get(menu.colour)))[0]
-
-    if ui.get(menu.rainbow) then
-        local realtime = globals.realtime() * 0.2 * 3
-        local val = realtime % 3
-        
-        local r, g, b = math.abs(math.sin(val + 4))*255, math.abs(math.sin(val + 2))*255, math.abs(math.sin(val))*255
-
-        colour = ffi.cast("unsigned char**", ffi.new("unsigned char[4]", { r, g, b, 255}))[0]
-    end
+    local colour = ffi.cast("unsigned char**", ffi.new("unsigned char[4]", ui.get(color)))[0]
 
     local m_vecPoint = vector(entity.get_origin(localplayer))
     local m_flThickness = 0.25

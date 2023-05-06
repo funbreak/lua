@@ -1,4 +1,4 @@
-local enabled_reference = ui.new_checkbox("MISC", "Miscellaneous", "Log damage received")
+local enabled_reference = ui.new_checkbox("LUA", "A", "Log damage received")
 
 local client_userid_to_entindex = client.userid_to_entindex
 local client_log = client.log

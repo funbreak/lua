@@ -20,4 +20,9 @@ client.set_event_callback('predict_command', function()
         ui.set_visible(bullettracer_ref, true)
         ui.set_visible(col_ref, true)
     end
+    if ui.get(hide_unloadbutton) then
+        ui.set_visible(unloadbutton_ref, false)
+    else
+        ui.set_visible(unloadbutton_ref, true)
+    end
 end)

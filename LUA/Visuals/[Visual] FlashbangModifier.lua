@@ -10,11 +10,11 @@ local string_find, string_format, string_gsub, string_len, string_gmatch, string
 local ipairs, assert, pairs, next, tostring, tonumber, setmetatable, unpack, type, getmetatable, pcall, error = ipairs, assert, pairs, next, tostring, tonumber, setmetatable, unpack, type, getmetatable, pcall, error
 --end of local variables
 
-local migrate_reference = ui.new_checkbox("VISUALS", "Effects", "Flashbang color")
+local migrate_reference = ui.new_checkbox("LUA", "A", "Flashbang color")
 local noflash_reference = ui.reference("VISUALS", "Effects", "Remove flashbang effects")
 
-local enabled_reference = ui.new_checkbox("VISUALS", "Effects", "Flashbang color ")
-local color_reference = ui.new_color_picker("VISUALS", "Effects", "Flashbang color", 255, 255, 255, 255)
+local enabled_reference = ui.new_checkbox("LUA", "A", "Flashbang color ")
+local color_reference = ui.new_color_picker("LUA", "A", "Flashbang color", 255, 255, 255, 255)
 
 local blinded_at, blinded_duration = {}, {}
 local enabled_prev
@@ -41,7 +41,6 @@ ui.set_callback(migrate_reference, function()
 end)
 
 local function on_paint(ctx)
-	--not doing this in run_command since it gets triggered to late, but always doing it (regardless of activation state)
 	local players = entity_get_players()
 	for i=1, #players do
 		local player = players[i]
@@ -65,11 +64,8 @@ local function on_paint(ctx)
 	if player == nil then
 		return
 	end
-	--if entity_get_prop(player, "m_flFlashMaxAlpha") > 0 then
-		entity_set_prop(player, "m_flFlashMaxAlpha", 0)
-	--end
+	entity_set_prop(player, "m_flFlashMaxAlpha", 0)
 
-	--check the flash duration of our spectator target if we are spectating in firstperson
 	if not entity_is_alive(player) then
 		if entity_get_prop(player, "m_iObserverMode") == 4 then
 			player = entity_get_prop(player, "m_hObserverTarget")
@@ -103,11 +99,6 @@ local function on_paint(ctx)
 				local r, g, b, a = ui_get(color_reference)
 				renderer_rectangle(0, 0, screen_width, screen_height, r, g, b, a*alpha)
 			end
-
-			--debug stuff
-			--renderer_text(255, 240, 255, 0, 0, 255, nil, 0, "duration:     ", duration)
-			--renderer_text(255, 250, 255, 0, 0, 255, nil, 0, "time left:     ", time_left)
-			--renderer_text(255, 260, 255, 0, 0, 255, nil, 0, "alpha mult: ", alpha)
 		end
 	end
 end

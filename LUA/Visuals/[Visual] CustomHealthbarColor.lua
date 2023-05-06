@@ -1,25 +1,21 @@
 local hpbar = {
-    customhealthbars = ui.new_combobox("VISUALS","Player ESP", "Custom healthbar", "Off", "Gamesense", "Fade", "Duo"),
-    colorpickerlabel = ui.new_label("VISUALS", "Player ESP", "Color 1"),
-    colorpicker = ui.new_color_picker("VISUALS", "Player ESP", "Color picker", 40, 200, 64, 255),
-    colorpickerlabel2 = ui.new_label("VISUALS", "Player ESP", "Color 2"),
-    colorpicker2 = ui.new_color_picker("VISUALS", "Player ESP", "Color picker2", 40, 155, 200, 255),
+    healtbar_toggle = ui.new_checkbox("LUA", "A", "Custom healthbar"),
+    customhealthbars = ui.new_combobox("LUA","A", "Custom healthbar", "Solid", "Fade", "Multicolor"),
+    colorpicker = ui.new_color_picker("LUA", "A", "Custom healthbar", 40, 200, 64, 255),
+    colorpicker2 = ui.new_color_picker("LUA", "A", "Custom healthbar", 40, 155, 200, 255),
 }
 
 local healthbar_ref = ui.reference("VISUALS", "Player ESP", 'Health bar')
     
+ui.set_visible(hpbar.customhealthbars, false)
 ui.set_visible(hpbar.colorpicker, false)
-ui.set_visible(hpbar.colorpickerlabel, false)
 ui.set_visible(hpbar.colorpicker2, false)
-ui.set_visible(hpbar.colorpickerlabel2, false)
 
 client.set_event_callback("paint", function()
-    if ui.get(hpbar.customhealthbars) ~= "Off" then
+    if ui.get(hpbar.healtbar_toggle) then
         ui.set(healthbar_ref, false)
+        ui.set_visible(hpbar.customhealthbars, true)
         ui.set_visible(hpbar.colorpicker, true)
-        ui.set_visible(hpbar.colorpickerlabel, true)
-        ui.set_visible(hpbar.colorpicker2, true)
-        ui.set_visible(hpbar.colorpickerlabel2, true)
 
         r, g, b, a = ui.get(hpbar.colorpicker)
         r2, g2, b2, a2 = ui.get(hpbar.colorpicker2)
@@ -34,29 +30,27 @@ client.set_event_callback("paint", function()
                 local width = x2 - x1
                 local leftside = x1 - (width/12)
                 if hp ~= nil then
-                    if ui.get(hpbar.customhealthbars) == "Off" then 
-                        return 
-                    else
-                        renderer.rectangle(leftside-1, y1-1, 4, height+1, 20, 20, 20, 220)
-                        if ui.get(hpbar.customhealthbars) == "Gamesense" then
-                            renderer.rectangle(leftside, y2-(height*hp/100), 2, height*hp/100-1, r, g, b, 255)
-                        elseif ui.get(hpbar.customhealthbars) == "Fade" then
-                            renderer.gradient(leftside, y2-(height*hp/100), 2, height*hp/100-1, r, g, b, 40, r, g, b, 255, false)
-                        elseif ui.get(hpbar.customhealthbars) == "Duo" then
-                            renderer.gradient(leftside, y2-(height*hp/100), 2, height*hp/100-1, r, g, b, 255, r2, g2, b2, 255, false)
-                        end
+                    renderer.rectangle(leftside-1, y1-1, 4, height+1, 20, 20, 20, 220)
+                    if ui.get(hpbar.customhealthbars) == "Solid" then
+                        ui.set_visible(hpbar.colorpicker2, false)
+                        renderer.rectangle(leftside, y2-(height*hp/100), 2, height*hp/100-1, r, g, b, 255)
+                    elseif ui.get(hpbar.customhealthbars) == "Fade" then
+                        ui.set_visible(hpbar.colorpicker2, false)
+                        renderer.gradient(leftside, y2-(height*hp/100), 2, height*hp/100-1, r, g, b, 255, r, g, b, 40, false)
+                    elseif ui.get(hpbar.customhealthbars) == "Multicolor" then
+                        ui.set_visible(hpbar.colorpicker2, true)
+                        renderer.gradient(leftside, y2-(height*hp/100), 2, height*hp/100-1, r, g, b, 255, r2, g2, b2, 255, false)
+                    end
     
-                        if hp < 100 then
-                            renderer.text(leftside, y2-(height*hp/100), 255, 255, 255, 255, "-cd", 0, hp )
-                        end
+                    if hp < 100 then
+                        renderer.text(leftside, y2-(height*hp/100), 255, 255, 255, 255, "-cd", 0, hp )
                     end
                 end
             end
         end
     else
+        ui.set_visible(hpbar.customhealthbars, false)
         ui.set_visible(hpbar.colorpicker, false)
-        ui.set_visible(hpbar.colorpickerlabel, false)
         ui.set_visible(hpbar.colorpicker2, false)
-        ui.set_visible(hpbar.colorpickerlabel2, false)
     end
 end)

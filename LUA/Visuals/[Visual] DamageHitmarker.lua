@@ -1,7 +1,7 @@
 local client_set_event_callback, client_userid_to_entindex, entity_get_local_player, entity_get_prop, renderer_text, renderer_world_to_screen, ui_get, ui_new_checkbox, ui_new_color_picker = client.set_event_callback, client.userid_to_entindex, entity.get_local_player, entity.get_prop, renderer.text, renderer.world_to_screen, ui.get, ui.new_checkbox, ui.new_color_picker
 
-local damage_indicator = ui_new_checkbox("Visuals", "Other ESP", "Damage indicator")
-local damage_color = ui_new_color_picker("Visuals", "Other ESP", "Damage color", 255, 255, 255, 255)
+local damage_indicator = ui_new_checkbox("LUA", "A", "Damage indicator")
+local damage_color = ui_new_color_picker("LUA", "A", "Damage color", 255, 255, 255, 255)
 
 local shot_data = {}
 
@@ -21,7 +21,7 @@ local function paint()
             end
             local sx, sy = renderer_world_to_screen(shot.x, shot.y, shot.z)
             if sx ~= nil then
-                renderer_text(sx, sy, r, g, b, shot.alpha, "cb", 0, shot.damage)
+                renderer_text(sx, sy, r, g, b, shot.alpha, "c", 0, shot.damage)
             end
             shot.z = shot.z + 0.25
         end
