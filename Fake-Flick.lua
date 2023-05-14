@@ -7,9 +7,10 @@ local new = {
     enabled = ui.new_checkbox('AA', 'Fake lag', 'AA-Flick'),
     hotkey = ui.new_hotkey('AA', 'Fake lag', 'Hotkey', true),
     invert = ui.new_hotkey('AA', 'Fake lag', 'Inverter'),
+    range = ui.new_slider('AA', 'Fake lag', 'Flick Range', 1, 180, 90, true),
+    invertrange = ui.new_slider('AA', 'Fake lag', 'Flick Inverted Range', -1, -180, -90, true)
 }
 
--- better than setting visibility in pre-render :shrug:
 ui.set_visible(new.hotkey, false)
 ui.set_visible(new.invert, false)
 local on_ui_callback = function()
@@ -26,11 +27,10 @@ local on_paint = function()
     local yaw_slider = ui.get(references.yaw[2])
     local is_it_on = ui.get(new.hotkey)
     local doubletap = ui.get(references.DoubleTap[1]) and ui.get(references.DoubleTap[2])
+    local flickrange = ui.get(new.range)
+    local flickinvertrange = ui.get(new.invertrange)
 
     if is_it_on and doubletap then
-        --renderer.rectangle(center[1] - 37, center[2] + 30, 74, 7, 0, 0, 0, 200)
-        --renderer.gradient(center[1] - 36, center[2] + 31, tickcount * 4, 5, 180, 60, 120, 255, 30, 30, 30, 255, false)
-
         if not is_it_on then
             ui.set(references.yaw[2], '0')
         end
@@ -40,11 +40,11 @@ local on_paint = function()
 
         if tickcount == 15 or tickcount == 17 and doubletap and is_it_on then
             if ui.get(new.invert) then
-                ui.set(references.yaw[2], '-110')
+                ui.set(references.yaw[2], flickinvertrange)
             end
 
             if not ui.get(new.invert) then
-                ui.set(references.yaw[2], '110')
+                ui.set(references.yaw[2], flickrange)
             end
 
             client.exec('-use')
