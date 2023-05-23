@@ -7,7 +7,7 @@
 -- https://gamesense.pub/forums/viewtopic.php?id=3357 Jump Hitchance
 -- https://gamesense.pub/forums/viewtopic.php?id=19239 Disable Airstrafe
 
-local ui_get, ui_set, ui_set_visible = ui.get, ui.set, ui.set_visible
+local ui_get, ui_set, ui_set_visible, renderer_indicator = ui.get, ui.set, ui.set_visible, renderer.indicator
 local bit_band = bit.band
 local csgo_weapons = require "gamesense/csgo_weapons"
 
@@ -19,10 +19,6 @@ local jumpscouthc = ui.new_slider("LUA", "A", "Jumpscout hitchance", 0, 100, 0, 
 
 local backuphitchance = ui_get(hitchance)
 local hitchanceSet = false
-
-
-
-ui_set_visible(jumpscouthc, false)
 
 client.set_event_callback("setup_command", function(c)
     if ui_get(jumpscout) then
@@ -50,25 +46,51 @@ client.set_event_callback("setup_command", function(c)
 
         local onground = bit_band(flags, 1);
         
-	    if onground == 0 and velocityCheck() and hitchanceSet == false then
+	    if weapon.name == "SSG 08" and onground == 0 and velocityCheck() and hitchanceSet == false then
 		    local jumphc = ui_get(jumpscouthc);
+            ui_set(air_strafe, false)
             ui_set(hitchance, jumphc);
             hitchanceSet = true;
-        elseif onground == 1 and hitchanceSet == true then
+        elseif weapon.name == "SSG 08" and onground == 1 and hitchanceSet == true then
             hitchanceSet = false;
             ui_set(hitchance, backuphitchance)
-        elseif onground == 1 and hitchanceSet == false and velocityCheck() == false then
-            backuphitchance = ui_get(hitchance)
-	    end
-
-        if weapon.name == "SSG 08" then
-            local vel = math.sqrt(vel_x^2 + vel_y^2)
-            ui_set(air_strafe, not (c.in_jump and (vel < 10)))
-        else
             ui_set(air_strafe, true)
-        end
+        elseif weapon.name == "SSG 08" and onground == 1 and hitchanceSet == false then
+            backuphitchance = ui_get(hitchance)
+            ui_set(air_strafe, true)
+	    end
     else
         ui_set_visible(jumpscouthc, false)
         ui_set(air_strafe, true)
+    end
+end)
+
+client.set_event_callback("paint", function(c)
+    if ui_get(jumpscout) then
+        local vel_x, vel_y = entity.get_prop(entity.get_local_player(), "m_vecVelocity")
+        local local_player = entity.get_local_player()
+        local flags = entity.get_prop(local_player, "m_fFlags");
+        local weapon_ent = entity.get_player_weapon(local_player)
+        local weapon_idx = entity.get_prop(weapon_ent, "m_iItemDefinitionIndex")
+        local weapon = csgo_weapons[weapon_idx]
+
+        local function velocityCheck()
+            if vel_x <= 150 and vel_y <= 150 and vel_x >= -150 and vel_y >= -150 then
+                return true
+            end
+        end
+
+        if local_player == nil then return end
+        if weapon_ent == nil then return end
+        if weapon_idx == nil then return end
+        weapon_idx = bit_band(weapon_idx, 0xFFFF)
+        if weapon == nil then return end
+	    if flags == nil then return end
+
+        local onground = bit_band(flags, 1);
+        
+	    if weapon.name == "SSG 08" and onground == 0 and velocityCheck() then
+		    renderer_indicator(255, 255, 255, 255, "JS")
+	    end
     end
 end)
