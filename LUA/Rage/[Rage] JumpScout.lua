@@ -24,8 +24,8 @@ client.set_event_callback("setup_command", function(c)
     if ui_get(jumpscout) then
         ui_set_visible(jumpscouthc, true)
 
-        local vel_x, vel_y = entity.get_prop(entity.get_local_player(), "m_vecVelocity")
         local local_player = entity.get_local_player()
+        local vel_x, vel_y = entity.get_prop(local_player, "m_vecVelocity")
         local flags = entity.get_prop(local_player, "m_fFlags");
         local weapon_ent = entity.get_player_weapon(local_player)
         local weapon_idx = entity.get_prop(weapon_ent, "m_iItemDefinitionIndex")
