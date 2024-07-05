@@ -22,42 +22,9 @@ local local_steamid = js.MyPersonaAPI.GetXuid()
 
 --#endregion
 
-local friendlist = -- owner : invisible text for simplified searching
+local friendlist =
 {
-    {steamid = "76561198153255176", owner = "funbreak Kev"}, -- funbreak
-    {steamid = "76561199477992426", owner = "funbreak Kev"}, -- 勝
-    {steamid = "76561199496383321", owner = "funbreak Kev"}, -- 愛
-
-    {steamid = "76561199389239564", owner = "GSTAR Gerd"}, -- GSTAR
-    {steamid = "76561199365552083", owner = "GSTAR Gerd"}, -- Special agent Bart Simpson
-    {steamid = "76561198956470136", owner = "GSTAR Gerd"}, -- 2 Liliputaner in einem Kostüm
-    {steamid = "76561199059168063", owner = "GSTAR Gerd"}, -- Joey
-    {steamid = "76561198942767885", owner = "GSTAR Gerd"}, -- Oggy
-    {steamid = "76561199059378812", owner = "GSTAR Gerd"}, -- gangsta cat
-    {steamid = "76561198971765798", owner = "GSTAR Gerd"}, -- Lenny
-    {steamid = "76561199061814920", owner = "GSTAR Gerd"}, -- Piss Goblin
-    {steamid = "76561199500785428", owner = "GSTAR Gerd"}, -- gstar
-    {steamid = "76561199515297553", owner = "GSTAR Gerd"}, -- ByteBandit  
-    {steamid = "76561199471475714", owner = "GSTAR Gerd"}, -- O_O  
-
-    {steamid = "76561198246896906", owner = "Nick"}, -- Nick430
-    {steamid = "76561198856399259", owner = "Nick"}, -- Stullenhalter
-    {steamid = "76561198914066826", owner = "Nick"}, -- Pixel-Inspector
-    {steamid = "76561199182527968", owner = "Nick"}, -- Toto
-    {steamid = "76561198975506330", owner = "Nick"}, -- Nut Master
-
-    {steamid = "76561198984017055", owner = "Digital Max"}, -- digital
-    {steamid = "76561199043172030", owner = "Digital Max"}, -- г фредо aka g fredo
-
-    {steamid = "76561199489158510", owner = "Eclipse Lucifer Sascha"}, -- Eclipse_Lυciғεя
-    {steamid = "76561198297444536", owner = "Eclipse Lucifer Sascha"}, -- NûR_âM_PêPpÊN
-    {steamid = "76561198286998094", owner = "Eclipse Lucifer Sascha"}, -- ^40êr KâNnTHôLz
-    {steamid = "76561199085561561", owner = "Eclipse Lucifer Sascha"}, -- Der der mit der Stulle tanzt 
-    {steamid = "76561199049271683", owner = "Eclipse Lucifer Sascha"}, -- 那句晚安她听了吗
-    {steamid = "76561198029652320", owner = "Eclipse Lucifer Sascha"}, -- 1
-    {steamid = "76561199180535481", owner = "Eclipse Lucifer Sascha"}, -- bb7784160
-
-    {steamid = "76561198118191343", owner = "Kayo"},
+    {steamid = "steam64id", owner = "Account Owner"} -- owner : invisible text for simplified searching
 }
 
 --#region ui elements
